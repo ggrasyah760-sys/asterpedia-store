@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Calculator Free Fire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gelap: '#0F172A',
+                        hijauTua: '#0F2D26',
+                        hijauCerah: '#10B981',
+                        emas: '#FBBF24',
+                        biru: '#1E40AF',
+                        abu: '#1F2937'
+                    },
+                    fontFamily: { poppins: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #0F172A 0%, #132E26 100%);
+            min-height: 100vh;
+        }
+        .kartu {
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 16px;
+        }
+        .banner {
+            background: linear-gradient(90deg, #0F2D26 0%, #064E3B 100%);
+            border: 2px solid #10B981;
+            border-radius: 20px;
+        }
+        .tombol-hijau {
+            background: linear-gradient(90deg, #059669 0%, #10B981 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .tombol-emas {
+            background: linear-gradient(90deg, #D97706 0%, #FBBF24 100%);
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+        }
+    </style>
+</head>
+<body class="text-white px-4 py-6">
+    <div class="container mx-auto max-w-4xl">
+
+        <!-- BANNER UTAMA -->
+        <div class="banner p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="w-full md:w-1/3">
+                <img src="https://i.imgur.com/7Z7Z7Z7.png" alt="Karakter FF" class="w-full h-auto rounded-lg">
+            </div>
+            <div class="w-full md:w-2/3 text-center md:text-left">
+                <h1 class="text-[clamp(24px,5vw,42px)] font-black text-white leading-tight mb-2">
+                    Ayo Cek <span class="text-emas">POINT's Prime</span> kamu!
+                </h1>
+                <p class="text-hijauCerah text-xl font-semibold mb-4">FREE FIRE</p>
+                <a href="#" class="inline-block tombol-hijau px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 transition-all">
+                    🌐 WEBSITE
+                </a>
+            </div>
+        </div>
+
+        <!-- DUA KOLOM KALKULATOR -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+
+            <!-- KALKULATOR POINT PRIME -->
+            <div class="kartu p-6">
+                <h2 class="text-2xl font-bold text-hijauCerah mb-6 flex items-center gap-2">
+                    <i class="fa fa-calculator"></i> PRIME CALCULATOR
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-300 mb-2 text-sm">Masukkan Jumlah Diamond</label>
+                        <input type="number" id="jumlahDm" value="121686" class="w-full p-4 bg-gelap border-2 border-hijauCerah/30 rounded-xl text-white text-lg focus:border-hijauCerah outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2 text-sm">Hasil Point Prime</label>
+                        <div class="w-full p-4 bg-gelap/80 border-2 border-emas/40 rounded-xl text-emas font-bold text-xl text-center" id="hasilPoint">
+                            135.584 Point
+                        </div>
+                    </div>
+                    <button onclick="hitungPoint()" class="w-full tombol-hijau py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all">
+                        HITUNG POINT
+                    </button>
+                </div>
+            </div>
+
+            <!-- CEK HARGA & LEVEL PRIME -->
+            <div class="kartu p-6">
+                <h2 class="text-2xl font-bold text-emas mb-6 flex items-center gap-2">
+                    <i class="fa fa-coins"></i> CEK HARGA PRIME
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-300 mb-2 text-sm">Pilih Level Prime (1-8)</label>
+                        <select id="pilihLevel" class="w-full p-4 bg-gelap border-2 border-emas/30 rounded-xl text-white text-lg focus:border-emas outline-none">
+                            <option value="1">Level 1</option>
+                            <option value="2">Level 2</option>
+                            <option value="3">Level 3</option>
+                            <option value="4">Level 4</option>
+                            <option value="5">Level 5</option>
+                            <option value="6">Level 6</option>
+                            <option value="7" selected>Level 7</option>
+                            <option value="8">Level 8</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2 text-sm">Estimasi Biaya & Point</label>
+                        <div class="w-full p-4 bg-gelap/80 border-2 border-hijauCerah/40 rounded-xl text-center">
+                            <p class="text-white text-lg mb-1">Dibutuhkan: <span id="butuhDm" class="text-hijauCerah font-bold">4.200 💎</span></p>
+                            <p class="text-emas font-bold text-xl" id="butuhPoint">≈ 112.500 Point</p>
+                        </div>
+                    </div>
+                    <button onclick="hitungLevel()" class="w-full tombol-emas py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all">
+                        HITUNG BIAYA
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAMPILAN HASIL SEPERTI DI GAMBAR -->
+        <div class="kartu p-6 text-center">
+            <h3 class="text-xl font-bold text-white mb-4">📊 HASIL PERHITUNGAN</h3>
+            <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+                <div class="bg-hijauTua p-4 rounded-xl border border-hijauCerah/30">
+                    <p class="text-gray-300 text-sm mb-1">Total Point</p>
+                    <p class="text-2xl font-bold text-hijauCerah">135.584</p>
+                </div>
+                <div class="bg-biru/20 p-4 rounded-xl border border-emas/30">
+                    <p class="text-gray-300 text-sm mb-1">Level Saat Ini</p>
+                    <p class="text-2xl font-bold text-emas">7</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Rumus hitung point (sesuai standar FF)
+        function hitungPoint() {
+            const dm = parseInt(document.getElementById('jumlahDm').value) || 0;
+            const point = Math.round(dm * 1.114); // Rasio sesuai contoh
+            document.getElementById('hasilPoint').textContent = point.toLocaleString('id-ID') + ' Point';
+        }
+
+        // Data biaya per level
+        const dataLevel = {
+            1: { dm: 100, point: 111 },
+            2: { dm: 300, point: 334 },
+            3: { dm: 600, point: 668 },
+            4: { dm: 1050, point: 1170 },
+            5: { dm: 1650, point: 1838 },
+            6: { dm: 2450, point: 2729 },
+            7: { dm: 3550, point: 3955 },
+            8: { dm: 5050, point: 5626 }
+        };
+
+        function hitungLevel() {
+            const level = parseInt(document.getElementById('pilihLevel').value);
+            const info = dataLevel[level];
+            document.getElementById('butuhDm').textContent = info.dm.toLocaleString('id-ID') + ' 💎';
+            document.getElementById('butuhPoint').textContent = '≈ ' + info.point.toLocaleString('id-ID') + ' Point';
+        }
+
+        // Jalankan saat buka
+        hitungPoint();
+        hitungLevel();
+    </script>
+</body>
+</html>
