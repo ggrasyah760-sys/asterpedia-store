@@ -3,179 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime Calculator Free Fire</title>
+    <title>KENJO GENERATOR v19 - Web Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pyodide@0.24.1/pyodide.js"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        gelap: '#0F172A',
-                        hijauTua: '#0F2D26',
-                        hijauCerah: '#10B981',
-                        emas: '#FBBF24',
-                        biru: '#1E40AF',
-                        abu: '#1F2937'
-                    },
-                    fontFamily: { poppins: ['Poppins', 'sans-serif'] }
+                    hijau: '#00FF41',
+                    gelap: '#0A0A0A',
+                    abu: '#1A1A1A',
+                    merah: '#FF2E2E'
                 }
             }
         }
     </script>
     <style type="text/tailwindcss">
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(180deg, #0F172A 0%, #132E26 100%);
-            min-height: 100vh;
-        }
-        .kartu {
-            background: rgba(31, 41, 55, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            border-radius: 16px;
-        }
-        .banner {
-            background: linear-gradient(90deg, #0F2D26 0%, #064E3B 100%);
-            border: 2px solid #10B981;
-            border-radius: 20px;
-        }
-        .tombol-hijau {
-            background: linear-gradient(90deg, #059669 0%, #10B981 100%);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-        .tombol-emas {
-            background: linear-gradient(90deg, #D97706 0%, #FBBF24 100%);
-            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
-        }
+        body { background: #0A0A0A; color: #00FF41; font-family: 'Courier New', monospace; }
+        .terminal { background: #0F0F0F; border: 2px solid #00FF41; box-shadow: 0 0 20px rgba(0,255,65,0.2); }
+        .kursor { animation: kedip 1s infinite; }
+        @keyframes kedip { 50% { opacity: 0; } }
+        .scroll-hijau::-webkit-scrollbar { width: 6px; }
+        .scroll-hijau::-webkit-scrollbar-thumb { background: #00FF41; border-radius: 3px; }
     </style>
 </head>
-<body class="text-white px-4 py-6">
-    <div class="container mx-auto max-w-4xl">
+<body class="min-h-screen p-4 md:p-6">
+    <div class="max-w-5xl mx-auto">
+        <!-- HEADER -->
+        <div class="text-center mb-6">
+            <h1 class="text-[clamp(24px,6vw,48px)] font-bold text-hijau mb-2">
+                <i class="fa fa-terminal mr-3"></i>KENJO GENERATOR v19
+            </h1>
+            <p class="text-green-400 text-lg">TROYTALE EDITION • SPEED STABILIZER • WEB BROWSER</p>
+        </div>
 
-        <!-- BANNER UTAMA -->
-        <div class="banner p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="w-full md:w-1/3">
-                <img src="https://i.imgur.com/7Z7Z7Z7.png" alt="Karakter FF" class="w-full h-auto rounded-lg">
-            </div>
-            <div class="w-full md:w-2/3 text-center md:text-left">
-                <h1 class="text-[clamp(24px,5vw,42px)] font-black text-white leading-tight mb-2">
-                    Ayo Cek <span class="text-emas">POINT's Prime</span> kamu!
-                </h1>
-                <p class="text-hijauCerah text-xl font-semibold mb-4">FREE FIRE</p>
-                <a href="#" class="inline-block tombol-hijau px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 transition-all">
-                    🌐 WEBSITE
-                </a>
+        <!-- TERMINAL UTAMA -->
+        <div class="terminal rounded-2xl p-4 md:p-6 mb-6">
+            <div id="output" class="h-[60vh] overflow-y-auto scroll-hijau p-4 text-lg leading-relaxed"></div>
+            <div class="flex items-center mt-4 border-t border-hijau/30 pt-4">
+                <span class="text-hijau mr-2">root@kenjo:~#</span>
+                <input type="text" id="cmd" class="flex-1 bg-transparent outline-none text-hijau text-lg" placeholder="Ketik perintah...">
+                <span class="kursor text-hijau text-2xl">▌</span>
             </div>
         </div>
 
-        <!-- DUA KOLOM KALKULATOR -->
-        <div class="grid md:grid-cols-2 gap-6 mb-8">
-
-            <!-- KALKULATOR POINT PRIME -->
-            <div class="kartu p-6">
-                <h2 class="text-2xl font-bold text-hijauCerah mb-6 flex items-center gap-2">
-                    <i class="fa fa-calculator"></i> PRIME CALCULATOR
-                </h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-gray-300 mb-2 text-sm">Masukkan Jumlah Diamond</label>
-                        <input type="number" id="jumlahDm" value="121686" class="w-full p-4 bg-gelap border-2 border-hijauCerah/30 rounded-xl text-white text-lg focus:border-hijauCerah outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-gray-300 mb-2 text-sm">Hasil Point Prime</label>
-                        <div class="w-full p-4 bg-gelap/80 border-2 border-emas/40 rounded-xl text-emas font-bold text-xl text-center" id="hasilPoint">
-                            135.584 Point
-                        </div>
-                    </div>
-                    <button onclick="hitungPoint()" class="w-full tombol-hijau py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all">
-                        HITUNG POINT
-                    </button>
-                </div>
-            </div>
-
-            <!-- CEK HARGA & LEVEL PRIME -->
-            <div class="kartu p-6">
-                <h2 class="text-2xl font-bold text-emas mb-6 flex items-center gap-2">
-                    <i class="fa fa-coins"></i> CEK HARGA PRIME
-                </h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-gray-300 mb-2 text-sm">Pilih Level Prime (1-8)</label>
-                        <select id="pilihLevel" class="w-full p-4 bg-gelap border-2 border-emas/30 rounded-xl text-white text-lg focus:border-emas outline-none">
-                            <option value="1">Level 1</option>
-                            <option value="2">Level 2</option>
-                            <option value="3">Level 3</option>
-                            <option value="4">Level 4</option>
-                            <option value="5">Level 5</option>
-                            <option value="6">Level 6</option>
-                            <option value="7" selected>Level 7</option>
-                            <option value="8">Level 8</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-gray-300 mb-2 text-sm">Estimasi Biaya & Point</label>
-                        <div class="w-full p-4 bg-gelap/80 border-2 border-hijauCerah/40 rounded-xl text-center">
-                            <p class="text-white text-lg mb-1">Dibutuhkan: <span id="butuhDm" class="text-hijauCerah font-bold">4.200 💎</span></p>
-                            <p class="text-emas font-bold text-xl" id="butuhPoint">≈ 112.500 Point</p>
-                        </div>
-                    </div>
-                    <button onclick="hitungLevel()" class="w-full tombol-emas py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all">
-                        HITUNG BIAYA
-                    </button>
-                </div>
-            </div>
-
+        <!-- TOMBOL KONTROL -->
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <button onclick="jalankanScript()" class="py-4 bg-hijau/20 hover:bg-hijau/40 border-2 border-hijau rounded-xl font-bold text-xl text-hijau transition-all">
+                <i class="fa fa-play mr-2"></i> JALANKAN GENERATOR
+            </button>
+            <button onclick="bersihkanLayar()" class="py-4 bg-abu/50 hover:bg-abu border-2 border-gray-500 rounded-xl font-bold text-xl text-gray-300 transition-all">
+                <i class="fa fa-trash mr-2"></i> BERSIHKAN LAYAR
+            </button>
+            <button onclick="hentikanProses()" class="py-4 bg-merah/20 hover:bg-merah/40 border-2 border-merah rounded-xl font-bold text-xl text-merah transition-all">
+                <i class="fa fa-stop mr-2"></i> HENTIKAN
+            </button>
         </div>
 
-        <!-- TAMPILAN HASIL SEPERTI DI GAMBAR -->
-        <div class="kartu p-6 text-center">
-            <h3 class="text-xl font-bold text-white mb-4">📊 HASIL PERHITUNGAN</h3>
-            <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
-                <div class="bg-hijauTua p-4 rounded-xl border border-hijauCerah/30">
-                    <p class="text-gray-300 text-sm mb-1">Total Point</p>
-                    <p class="text-2xl font-bold text-hijauCerah">135.584</p>
-                </div>
-                <div class="bg-biru/20 p-4 rounded-xl border border-emas/30">
-                    <p class="text-gray-300 text-sm mb-1">Level Saat Ini</p>
-                    <p class="text-2xl font-bold text-emas">7</p>
-                </div>
-            </div>
+        <!-- STATUS -->
+        <div class="bg-abu/50 border border-hijau/30 rounded-xl p-4 text-center">
+            <span class="text-gray-400">Status: </span>
+            <span id="status" class="text-yellow-400 font-bold">Siap. Klik "Jalankan Generator" untuk memulai.</span>
         </div>
-
     </div>
 
     <script>
-        // Rumus hitung point (sesuai standar FF)
-        function hitungPoint() {
-            const dm = parseInt(document.getElementById('jumlahDm').value) || 0;
-            const point = Math.round(dm * 1.114); // Rasio sesuai contoh
-            document.getElementById('hasilPoint').textContent = point.toLocaleString('id-ID') + ' Point';
+        let pyodide = null;
+        let prosesBerjalan = false;
+
+        // Inisialisasi Pyodide
+        async function initPyodide() {
+            const status = document.getElementById('status');
+            status.textContent = "Memuat Mesin Python... Mohon tunggu...";
+            try {
+                pyodide = await loadPyodide({
+                    indexURL: "https://cdn.jsdelivr.net/npm/pyodide@0.24.1/"
+                });
+                await pyodide.loadPackage(['micropip']);
+                status.textContent = "✅ Siap! Klik Jalankan Generator.";
+            } catch (err) {
+                status.textContent = "❌ Gagal memuat Python: " + err.message;
+            }
         }
 
-        // Data biaya per level
-        const dataLevel = {
-            1: { dm: 100, point: 111 },
-            2: { dm: 300, point: 334 },
-            3: { dm: 600, point: 668 },
-            4: { dm: 1050, point: 1170 },
-            5: { dm: 1650, point: 1838 },
-            6: { dm: 2450, point: 2729 },
-            7: { dm: 3550, point: 3955 },
-            8: { dm: 5050, point: 5626 }
-        };
-
-        function hitungLevel() {
-            const level = parseInt(document.getElementById('pilihLevel').value);
-            const info = dataLevel[level];
-            document.getElementById('butuhDm').textContent = info.dm.toLocaleString('id-ID') + ' 💎';
-            document.getElementById('butuhPoint').textContent = '≈ ' + info.point.toLocaleString('id-ID') + ' Point';
+        // Cetak ke Terminal
+        function cetak(teks) {
+            const out = document.getElementById('output');
+            out.innerHTML += teks.replace(/\n/g, '<br>');
+            out.scrollTop = out.scrollHeight;
         }
 
-        // Jalankan saat buka
-        hitungPoint();
-        hitungLevel();
+        function bersihkanLayar() {
+            document.getElementById('output').innerHTML = '';
+        }
+
+        // Kode Python Asli (Diadaptasi untuk Web)
+        const kodePython = `
+import random
+import string
+import time
+import re
+from datetime import datetime
+
+# ==============================================
+# WARNA & BANNER
+# ==============================================
+R = "\\033[91m"
+G = "\\033[92m"
+Y = "\\033[93m"
+B = "\\033[94m"
+P = "\\033[95m"
+C = "\\033[96m"
+W = "\\033[97m"
+RE = "\\033[0m"
+BLD = "\\033[1m"
+M = "\\033[38;5;208m"
+
+BORDER = f"{C}{BLD}"
+WATERMARK = "RASYAH TEAM"
+
+KENJO_ART = f"""
+{R}{BLD}
+ ██▓ ███▄    █  ██ ▄█▀  ██████ ▒█████  ▒█████   ██▓
+▓██▒ ██ ▀█   █  ██▄█▒ ▒██    ▒ ▒██▒  ██▒▒██▒  ██▒▓██▒
+▒██▒▓██  ▀█ ██▒▓███▄░ ░ ▓██▄   ▒██░  ██▒▒██░  ██▒▒██▒
+░██░▓██▒  ▐▌██▒▓██ █▄   ▒   ██▒▒██   ██░▒██   ██░░██░
+░██░▒██░   ▓██░▒██▒ █▄▒██████▒▒░ ████▓▒░░ ████▓▒░░██░
+░▓  ░ ▒░   ▒ ▒ ▒ ▒▒ ▓▒▒ ▒▓▒ ▒ ░░ ▒░▒░▒░ ░ ▒░▒░▒░ ░▓ 
+ ▒ ░░ ░░   ░ ▒░░ ░▒ ▒░░ ░▒  ░ ░  ░ ▒ ▒░   ░ ▒ ▒░  ▒ ░
+ ▒ ░   ░   ░ ░ ░ ░░ ░ ░  ░  ░  ░ ░ ░ ▒  ░ ░ ░ ▒   ▒ ░
+ ░         ░   ░  ░░ ░       ░      ░ ░      ░ ░   ░ 
+{RE}
+"""
+
+def print_banner():
+    print(KENJO_ART)
+    print(f"{BORDER}{'='*78}{RE}")
+    print(f"{BORDER}{G}KENJO GENERATOR - TROYTALE EDITION{RE}")
+    print(f"{BORDER}{Y}Versi: 4.2 | Mode: Web Browser{RE}")
+    print(f"{BORDER}{P}Dibuat oleh: KENJO TEAM | {WATERMARK}{RE}")
+    print(f"{BORDER}{'='*78}{RE}\\n")
+
+# ==============================================
+# KONFIGURASI
+# ==============================================
+class Config:
+    HEX_KEY = "2ee44819e9b4598845141067b281621874d0d5d7af9d8f7e00c1e54715b7d1e3"
+    MAX_RETRIES = 1
+    TIMEOUT = 5
+    POOL_SIZE = 100
+    BASE_FOLDER = "KENJO-GENERATOR"
+    RARITY_THRESHOLD = 3
+    MAX_GENERATE = 50000
+
+# ==============================================
+# FUNGSI GENERASI & DETEKSI
+# ==============================================
+def gen_name():
+    prefix = "KENJO"
+    chars = string.ascii_uppercase + string.digits
+    return f"{prefix}{''.join(random.choices(chars, k=6))}"
+
+def gen_pwd():
+    return f"KENJO@{random.randint(100000,999999)}"
+
+PATTERNS = [
+    (re.compile(r"(111|222|333|444|555|666|777|888|999|000)"), 3),
+    (re.compile(r"(1111|2222|3333|4444|5555|6666|7777|8888|9999|0000)"), 5),
+    (re.compile(r"(11111|22222|33333|44444|55555|66666|77777|88888|99999|00000)"), 7),
+    (re.compile(r"(1111111|2222222|3333333|4444444|5555555|6666666|7777777|8888888|9999999|0000000)"), 10),
+]
+
+def detect_score(aid):
+    if not aid or aid == "N/A":
+        return 0
+    s = str(aid)
+    best = 0
+    for pattern, score in PATTERNS:
+        if pattern.search(s):
+            best = max(best, score)
+    length = len(s)
+    if length <=5: best = max(best,8)
+    elif length <=6: best = max(best,6)
+    elif length <=7: best = max(best,4)
+    return best
+
+def get_tier(score):
+    if score >=9: return "LEGEND"
+    elif score >=7: return "HIGH"
+    elif score >=5: return "MEDIUM"
+    elif score >= Config.RARITY_THRESHOLD: return "LOW"
+    return "NORMAL"
+
+# ==============================================
+# PROSES UTAMA
+# ==============================================
+def main():
+    print_banner()
+    print(f"{Y}[⌛] Memulai Generator ID...{RE}\\n")
+    total = 0
+    normal = 0
+    low = 0
+    medium = 0
+    high = 0
+    legend = 0
+    mulai = time.time()
+
+    try:
+        for i in range(Config.MAX_GENERATE):
+            if not proses_berjalan:
+                print(f"\\n{R}[⏹️] Proses dihentikan oleh pengguna.{RE}")
+                break
+            aid = random.randint(10000000, 999999999)
+            nama = gen_name()
+            sandi = gen_pwd()
+            skor = detect_score(aid)
+            tier = get_tier(skor)
+            total +=1
+
+            if tier == "NORMAL":
+                normal +=1
+                print(f"{W}[ℹ️] ID: {aid:10d} | Nama: {nama:12s} | Tier: {tier:6s}{RE}")
+            elif tier == "LOW":
+                low +=1
+                print(f"{G}[💎] ID: {aid:10d} | Nama: {nama:12s} | Tier: {tier:6s} | Skor: {skor}{RE}")
+            elif tier == "MEDIUM":
+                medium +=1
+                print(f"{B}[💎💎] ID: {aid:10d} | Nama: {nama:12s} | Tier: {tier:6s} | Skor: {skor}{RE}")
+            elif tier == "HIGH":
+                high +=1
+                print(f"{Y}[💎💎💎] ID: {aid:10d} | Nama: {nama:12s} | Tier: {tier:6s} | Skor: {skor}{RE}")
+            elif tier == "LEGEND":
+                legend +=1
+                print(f"{R}{BLD}[👑 LEGEND] ID: {aid:10d} | Nama: {nama:12s} | Pass: {sandi:15s} | Skor: {skor}{RE}")
+
+            if total % 50 ==0:
+                kecepatan = round(total/(time.time()-mulai),2)
+                print(f"\\n{C}[📊] Statistik: Total={total} | Normal={normal} | Rare={low+medium+high+legend} | Kecepatan={kecepatan} ID/detik{RE}\\n")
+
+    except Exception as e:
+        print(f"\\n{R}[❌] Error: {str(e)}{RE}")
+    finally:
+        durasi = round(time.time()-mulai,2)
+        print(f"\\n{'='*78}")
+        print(f"{G}[✅] SELESAI! Hasil Akhir:{RE}")
+        print(f"{W}• Total ID Dibuat   : {total:,}{RE}")
+        print(f"{W}• Normal           : {normal:,}{RE}")
+        print(f"{G}• Low Rare         : {low:,}{RE}")
+        print(f"{B}• Medium Rare      : {medium:,}{RE}")
+        print(f"{Y}• High Rare        : {high:,}{RE}")
+        print(f"{R}• Legend Rare      : {legend:,}{RE}")
+        print(f"{C}• Durasi           : {durasi} detik{RE}")
+        print(f"{C}• Rata-rata        : {round(total/durasi,2)} ID/detik{RE}")
+        print(f"{'='*78}\\n")
+
+proses_berjalan = True
+main()
+`;
+
+        // Jalankan Script
+        async function jalankanScript() {
+            if (!pyodide) { alert("Tunggu hingga mesin Python selesai dimuat!"); return; }
+            if (prosesBerjalan) { alert("Generator sedang berjalan!"); return; }
+            
+            bersihkanLayar();
+            prosesBerjalan = true;
+            document.getElementById('status').textContent = "🔄 Sedang berjalan...";
+            
+            try {
+                pyodide.globals.set('proses_berjalan', true);
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = buffer = StringIO()
+`);
+                await pyodide.runPythonAsync(kodePython);
+                const hasil = pyodide.runPython('buffer.getvalue()');
+                cetak(hasil.replace(/\033\[(\d+;?)+m/g, ''));
+            } catch (err) {
+                cetak(`\\n❌ Kesalahan: ${err}\\n`);
+            } finally {
+                prosesBerjalan = false;
+                document.getElementById('status').textContent = "✅ Selesai. Siap lagi.";
+            }
+        }
+
+        function hentikanProses() {
+            if (pyodide) pyodide.globals.set('proses_berjalan', false);
+            prosesBerjalan = false;
+            document.getElementById('status').textContent = "⏹️ Dihentikan.";
+        }
+
+        // Mulai Inisialisasi
+        initPyodide();
+
+        // Input Perintah
+        document.getElementById('cmd').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const perintah = this.value.trim().toLowerCase();
+                cetak(`<br>root@kenjo:~# ${perintah}<br>`);
+                this.value = '';
+                if (perintah === 'start' || perintah === 'run') jalankanScript();
+                else if (perintah === 'clear') bersihkanLayar();
+                else if (perintah === 'stop') hentikanProses();
+                else cetak(`Perintah tidak dikenal. Gunakan: start | clear | stop<br>`);
+            }
+        });
     </script>
 </body>
 </html>
