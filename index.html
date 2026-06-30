@@ -6,7 +6,8 @@
     <title>KENJO GENERATOR v19 - Web Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/pyodide@0.24.1/pyodide.js"></script>
+    <!-- GUNAKAN CDN PYODIDE YANG LEBIH STABIL -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pyodide/0.26.1/pyodide.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -30,7 +31,6 @@
 </head>
 <body class="min-h-screen p-4 md:p-6">
     <div class="max-w-5xl mx-auto">
-        <!-- HEADER -->
         <div class="text-center mb-6">
             <h1 class="text-[clamp(24px,6vw,48px)] font-bold text-hijau mb-2">
                 <i class="fa fa-terminal mr-3"></i>KENJO GENERATOR v19
@@ -38,7 +38,6 @@
             <p class="text-green-400 text-lg">TROYTALE EDITION • SPEED STABILIZER • WEB BROWSER</p>
         </div>
 
-        <!-- TERMINAL UTAMA -->
         <div class="terminal rounded-2xl p-4 md:p-6 mb-6">
             <div id="output" class="h-[60vh] overflow-y-auto scroll-hijau p-4 text-lg leading-relaxed"></div>
             <div class="flex items-center mt-4 border-t border-hijau/30 pt-4">
@@ -48,7 +47,6 @@
             </div>
         </div>
 
-        <!-- TOMBOL KONTROL -->
         <div class="grid md:grid-cols-3 gap-4 mb-6">
             <button onclick="jalankanScript()" class="py-4 bg-hijau/20 hover:bg-hijau/40 border-2 border-hijau rounded-xl font-bold text-xl text-hijau transition-all">
                 <i class="fa fa-play mr-2"></i> JALANKAN GENERATOR
@@ -61,10 +59,9 @@
             </button>
         </div>
 
-        <!-- STATUS -->
         <div class="bg-abu/50 border border-hijau/30 rounded-xl p-4 text-center">
             <span class="text-gray-400">Status: </span>
-            <span id="status" class="text-yellow-400 font-bold">Siap. Klik "Jalankan Generator" untuk memulai.</span>
+            <span id="status" class="text-yellow-400 font-bold">Memuat mesin Python...</span>
         </div>
     </div>
 
@@ -72,56 +69,37 @@
         let pyodide = null;
         let prosesBerjalan = false;
 
-        // Inisialisasi Pyodide
         async function initPyodide() {
             const status = document.getElementById('status');
-            status.textContent = "Memuat Mesin Python... Mohon tunggu...";
             try {
-                pyodide = await loadPyodide({
-                    indexURL: "https://cdn.jsdelivr.net/npm/pyodide@0.24.1/"
-                });
-                await pyodide.loadPackage(['micropip']);
+                // GUNAKAN VERSI YANG LEBIH STABIL
+                pyodide = await loadPyodide({ indexURL: "https://cdnjs.cloudflare.com/ajax/libs/pyodide/0.26.1/" });
                 status.textContent = "✅ Siap! Klik Jalankan Generator.";
+                status.classList.remove('text-yellow-400');
+                status.classList.add('text-green-400');
             } catch (err) {
-                status.textContent = "❌ Gagal memuat Python: " + err.message;
+                status.textContent = "❌ Gagal memuat Python: Cek koneksi atau buka ulang halaman";
+                status.classList.remove('text-yellow-400');
+                status.classList.add('text-red-400');
+                console.error(err);
             }
         }
 
-        // Cetak ke Terminal
         function cetak(teks) {
             const out = document.getElementById('output');
             out.innerHTML += teks.replace(/\n/g, '<br>');
             out.scrollTop = out.scrollHeight;
         }
 
-        function bersihkanLayar() {
-            document.getElementById('output').innerHTML = '';
-        }
+        function bersihkanLayar() { document.getElementById('output').innerHTML = ''; }
+        function hentikanProses() { prosesBerjalan = false; document.getElementById('status').textContent = "⏹️ Dihentikan."; }
 
-        // Kode Python Asli (Diadaptasi untuk Web)
         const kodePython = `
-import random
-import string
-import time
-import re
+import random, string, time, re
 from datetime import datetime
 
-# ==============================================
-# WARNA & BANNER
-# ==============================================
-R = "\\033[91m"
-G = "\\033[92m"
-Y = "\\033[93m"
-B = "\\033[94m"
-P = "\\033[95m"
-C = "\\033[96m"
-W = "\\033[97m"
-RE = "\\033[0m"
-BLD = "\\033[1m"
-M = "\\033[38;5;208m"
-
+R,G,Y,B,P,C,W,RE,BLD = "\\033[91m","\\033[92m","\\033[93m","\\033[94m","\\033[95m","\\033[96m","\\033[97m","\\033[0m","\\033[1m"
 BORDER = f"{C}{BLD}"
-WATERMARK = "RASYAH TEAM"
 
 KENJO_ART = f"""
 {R}{BLD}
@@ -142,31 +120,15 @@ def print_banner():
     print(f"{BORDER}{'='*78}{RE}")
     print(f"{BORDER}{G}KENJO GENERATOR - TROYTALE EDITION{RE}")
     print(f"{BORDER}{Y}Versi: 4.2 | Mode: Web Browser{RE}")
-    print(f"{BORDER}{P}Dibuat oleh: KENJO TEAM | {WATERMARK}{RE}")
+    print(f"{BORDER}{P}Dibuat oleh: KENJO TEAM{RE}")
     print(f"{BORDER}{'='*78}{RE}\\n")
 
-# ==============================================
-# KONFIGURASI
-# ==============================================
 class Config:
-    HEX_KEY = "2ee44819e9b4598845141067b281621874d0d5d7af9d8f7e00c1e54715b7d1e3"
-    MAX_RETRIES = 1
-    TIMEOUT = 5
-    POOL_SIZE = 100
-    BASE_FOLDER = "KENJO-GENERATOR"
     RARITY_THRESHOLD = 3
     MAX_GENERATE = 50000
 
-# ==============================================
-# FUNGSI GENERASI & DETEKSI
-# ==============================================
-def gen_name():
-    prefix = "KENJO"
-    chars = string.ascii_uppercase + string.digits
-    return f"{prefix}{''.join(random.choices(chars, k=6))}"
-
-def gen_pwd():
-    return f"KENJO@{random.randint(100000,999999)}"
+def gen_name(): return "KENJO"+''.join(random.choices(string.ascii_uppercase+string.digits,k=6))
+def gen_pwd(): return "KENJO@"+str(random.randint(100000,999999))
 
 PATTERNS = [
     (re.compile(r"(111|222|333|444|555|666|777|888|999|000)"), 3),
@@ -176,140 +138,105 @@ PATTERNS = [
 ]
 
 def detect_score(aid):
-    if not aid or aid == "N/A":
-        return 0
     s = str(aid)
-    best = 0
-    for pattern, score in PATTERNS:
-        if pattern.search(s):
-            best = max(best, score)
-    length = len(s)
-    if length <=5: best = max(best,8)
-    elif length <=6: best = max(best,6)
-    elif length <=7: best = max(best,4)
+    best=0
+    for p,sc in PATTERNS:
+        if p.search(s): best=max(best,sc)
+    l=len(s)
+    if l<=5: best=max(best,8)
+    elif l<=6: best=max(best,6)
+    elif l<=7: best=max(best,4)
     return best
 
-def get_tier(score):
-    if score >=9: return "LEGEND"
-    elif score >=7: return "HIGH"
-    elif score >=5: return "MEDIUM"
-    elif score >= Config.RARITY_THRESHOLD: return "LOW"
+def get_tier(sc):
+    if sc>=9: return "LEGEND"
+    elif sc>=7: return "HIGH"
+    elif sc>=5: return "MEDIUM"
+    elif sc>=Config.RARITY_THRESHOLD: return "LOW"
     return "NORMAL"
 
-# ==============================================
-# PROSES UTAMA
-# ==============================================
 def main():
     print_banner()
     print(f"{Y}[⌛] Memulai Generator ID...{RE}\\n")
-    total = 0
-    normal = 0
-    low = 0
-    medium = 0
-    high = 0
-    legend = 0
-    mulai = time.time()
-
+    total=normal=low=med=high=legend=0
+    mulai=time.time()
     try:
-        for i in range(Config.MAX_GENERATE):
+        for _ in range(Config.MAX_GENERATE):
             if not proses_berjalan:
-                print(f"\\n{R}[⏹️] Proses dihentikan oleh pengguna.{RE}")
+                print(f"\\n{R}[⏹️] Dihentikan.{RE}")
                 break
-            aid = random.randint(10000000, 999999999)
-            nama = gen_name()
-            sandi = gen_pwd()
-            skor = detect_score(aid)
-            tier = get_tier(skor)
-            total +=1
-
-            if tier == "NORMAL":
-                normal +=1
-                print(f"{W}[ℹ️] ID: {aid:10d} | Nama: {nama:12s} | Tier: {tier:6s}{RE}")
-            elif tier == "LOW":
-                low +=1
-                print(f"{G}[💎] ID: {aid:10d} | Nama: {nama:12s} | Tier: {tier:6s} | Skor: {skor}{RE}")
-            elif tier == "MEDIUM":
-                medium +=1
-                print(f"{B}[💎💎] ID: {aid:10d} | Nama: {nama:12s} | Tier: {tier:6s} | Skor: {skor}{RE}")
-            elif tier == "HIGH":
-                high +=1
-                print(f"{Y}[💎💎💎] ID: {aid:10d} | Nama: {nama:12s} | Tier: {tier:6s} | Skor: {skor}{RE}")
-            elif tier == "LEGEND":
-                legend +=1
-                print(f"{R}{BLD}[👑 LEGEND] ID: {aid:10d} | Nama: {nama:12s} | Pass: {sandi:15s} | Skor: {skor}{RE}")
-
-            if total % 50 ==0:
-                kecepatan = round(total/(time.time()-mulai),2)
-                print(f"\\n{C}[📊] Statistik: Total={total} | Normal={normal} | Rare={low+medium+high+legend} | Kecepatan={kecepatan} ID/detik{RE}\\n")
-
+            aid=random.randint(10000000,999999999)
+            nm=gen_name()
+            pw=gen_pwd()
+            sk=detect_score(aid)
+            tier=get_tier(sk)
+            total+=1
+            if tier=="NORMAL":
+                normal+=1
+                print(f"{W}[ℹ️] ID:{aid:10d} | Nama:{nm:12s} | Tier:{tier:6s}{RE}")
+            elif tier=="LOW":
+                low+=1
+                print(f"{G}[💎] ID:{aid:10d} | Nama:{nm:12s} | Tier:{tier:6s} | Skor:{sk}{RE}")
+            elif tier=="MEDIUM":
+                med+=1
+                print(f"{B}[💎💎] ID:{aid:10d} | Nama:{nm:12s} | Tier:{tier:6s} | Skor:{sk}{RE}")
+            elif tier=="HIGH":
+                high+=1
+                print(f"{Y}[💎💎💎] ID:{aid:10d} | Nama:{nm:12s} | Tier:{tier:6s} | Skor:{sk}{RE}")
+            elif tier=="LEGEND":
+                legend+=1
+                print(f"{R}{BLD}[👑 LEGEND] ID:{aid:10d} | Nama:{nm:12s} | Pass:{pw:15s} | Skor:{sk}{RE}")
+            if total%50==0:
+                kec=round(total/(time.time()-mulai),2)
+                print(f"\\n{C}[📊] Total:{total} | Normal:{normal} | Rare:{low+med+high+legend} | Kecepatan:{kec} ID/detik{RE}\\n")
     except Exception as e:
-        print(f"\\n{R}[❌] Error: {str(e)}{RE}")
+        print(f"\\n{R}[❌] Error:{e}{RE}")
     finally:
-        durasi = round(time.time()-mulai,2)
-        print(f"\\n{'='*78}")
-        print(f"{G}[✅] SELESAI! Hasil Akhir:{RE}")
-        print(f"{W}• Total ID Dibuat   : {total:,}{RE}")
-        print(f"{W}• Normal           : {normal:,}{RE}")
-        print(f"{G}• Low Rare         : {low:,}{RE}")
-        print(f"{B}• Medium Rare      : {medium:,}{RE}")
-        print(f"{Y}• High Rare        : {high:,}{RE}")
-        print(f"{R}• Legend Rare      : {legend:,}{RE}")
-        print(f"{C}• Durasi           : {durasi} detik{RE}")
-        print(f"{C}• Rata-rata        : {round(total/durasi,2)} ID/detik{RE}")
-        print(f"{'='*78}\\n")
+        dur=round(time.time()-mulai,2)
+        print(f"\\n{'='*78}\\n{G}[✅] SELESAI!{RE}\\n• Total:{total:,}\\n• Normal:{normal:,}\\n• Low:{low:,}\\n• Medium:{med:,}\\n• High:{high:,}\\n• Legend:{legend:,}\\n• Durasi:{dur} detik\\n• Rata-rata:{round(total/dur,2)} ID/detik\\n{'='*78}")
 
 proses_berjalan = True
 main()
 `;
 
-        // Jalankan Script
         async function jalankanScript() {
-            if (!pyodide) { alert("Tunggu hingga mesin Python selesai dimuat!"); return; }
-            if (prosesBerjalan) { alert("Generator sedang berjalan!"); return; }
-            
+            if (!pyodide) { alert("Tunggu sampai status hijau 'Siap'"); return; }
+            if (prosesBerjalan) return;
             bersihkanLayar();
             prosesBerjalan = true;
             document.getElementById('status').textContent = "🔄 Sedang berjalan...";
-            
+            document.getElementById('status').className = "text-yellow-400 font-bold";
             try {
                 pyodide.globals.set('proses_berjalan', true);
                 pyodide.runPython(`
 import sys
 from io import StringIO
-sys.stdout = buffer = StringIO()
+sys.stdout = buf = StringIO()
 `);
                 await pyodide.runPythonAsync(kodePython);
-                const hasil = pyodide.runPython('buffer.getvalue()');
-                cetak(hasil.replace(/\033\[(\d+;?)+m/g, ''));
+                const hasil = pyodide.runPython('buf.getvalue()').replace(/\033\[[0-9;]*m/g, '');
+                cetak(hasil);
             } catch (err) {
                 cetak(`\\n❌ Kesalahan: ${err}\\n`);
             } finally {
                 prosesBerjalan = false;
-                document.getElementById('status').textContent = "✅ Selesai. Siap lagi.";
+                document.getElementById('status').textContent = "✅ Selesai / Siap lagi";
+                document.getElementById('status').className = "text-green-400 font-bold";
             }
         }
 
-        function hentikanProses() {
-            if (pyodide) pyodide.globals.set('proses_berjalan', false);
-            prosesBerjalan = false;
-            document.getElementById('status').textContent = "⏹️ Dihentikan.";
-        }
-
-        // Mulai Inisialisasi
         initPyodide();
-
-        // Input Perintah
-        document.getElementById('cmd').addEventListener('keydown', function(e) {
+        document.getElementById('cmd').addEventListener('keydown', e => {
             if (e.key === 'Enter') {
-                const perintah = this.value.trim().toLowerCase();
+                const perintah = e.target.value.trim().toLowerCase();
                 cetak(`<br>root@kenjo:~# ${perintah}<br>`);
-                this.value = '';
+                e.target.value = '';
                 if (perintah === 'start' || perintah === 'run') jalankanScript();
                 else if (perintah === 'clear') bersihkanLayar();
                 else if (perintah === 'stop') hentikanProses();
-                else cetak(`Perintah tidak dikenal. Gunakan: start | clear | stop<br>`);
+                else cetak(`Gunakan: start | clear | stop<br>`);
             }
         });
     </script>
 </body>
-</html>
+    </html>
