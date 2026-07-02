@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAESTU UID • Guild</title>
+    <title>SAESTU UID • Daftar Resmi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -12,12 +12,11 @@
                 extend: {
                     colors: {
                         guild: {
-                            yellow: '#FFD100',
-                            black: '#121212',
-                            holo1: '#FF00FF',
-                            holo2: '#00FFFF',
-                            holo3: '#FFD700',
-                            holo4: '#FF4500'
+                            kuning: '#FFDD00', /* Kuning biasa, tidak terlalu cerah */
+                            gelap: '#121212',
+                            kapten: '#FF3D00',
+                            officer: '#0066FF',
+                            member: '#FFFFFF'
                         }
                     },
                     fontFamily: {
@@ -33,86 +32,152 @@
         body {
             margin: 0;
             min-height: 100vh;
-            /* Background Holo Berkilau */
-            background: linear-gradient(45deg, 
-                rgba(255, 0, 255, 0.7), 
-                rgba(0, 255, 255, 0.7), 
-                rgba(255, 215, 0, 0.7), 
-                rgba(255, 69, 0, 0.7));
-            background-size: 400% 400%;
-            animation: holoBg 12s ease infinite;
+            background-color: #FFDD00; /* Kuning lembut */
             font-family: 'Orbitron', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        @keyframes holoBg {
-            0% { background-position: 0% 50%; }
-            25% { background-position: 50% 100%; }
-            50% { background-position: 100% 50%; }
-            75% { background-position: 50% 0%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .logo-box {
-            width: clamp(280px, 60vw, 450px);
-            height: clamp(280px, 60vw, 450px);
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(10px);
-            border: 4px solid #FFD100;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 
-                0 0 30px rgba(255, 209, 0, 0.8),
-                inset 0 0 20px rgba(255, 209, 0, 0.4);
-            transition: all 0.5s ease;
-        }
-
-        .logo-box:hover {
-            transform: scale(1.05);
-            box-shadow: 
-                0 0 50px rgba(255, 209, 0, 1),
-                inset 0 0 30px rgba(255, 209, 0, 0.6);
-        }
-
-        .logo-img {
-            width: 90%;
-            height: 90%;
-            object-fit: contain;
+            padding: 2rem 1rem;
+            overflow-y: auto;
         }
 
         .guild-title {
             font-size: clamp(2.5rem, 8vw, 5rem);
             font-weight: 800;
-            color: #FFD100;
-            text-shadow: 
-                0 0 15px #FFD100,
-                0 0 30px #FFD100,
-                4px 4px 8px rgba(0,0,0,0.8);
-            margin-bottom: 3rem;
+            color: #000000;
+            text-align: center;
+            margin-bottom: 2.5rem;
             letter-spacing: 4px;
-            animation: pulse 2s infinite alternate;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
         }
 
-        @keyframes pulse {
-            from { filter: brightness(1); }
-            to { filter: brightness(1.4); }
+        .main-box {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.85);
+            border: 4px solid #000000;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            font-weight: 700;
+            text-align: center;
+            margin: 2rem 0 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid;
+        }
+
+        .kapten-title { color: #FF3D00; border-color: #FF3D00; }
+        .officer-title { color: #0066FF; border-color: #0066FF; }
+        .member-title { color: #FFFFFF; border-color: #FFFFFF; }
+
+        .uid-item {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            margin: 0.6rem 0;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: text;
+            user-select: all;
+        }
+
+        .kapten-uid {
+            background: rgba(255, 61, 0, 0.2);
+            color: #FF3D00;
+            border: 2px solid #FF3D00;
+        }
+        .kapten-uid:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px #FF3D00;
+        }
+
+        .officer-uid {
+            background: rgba(0, 102, 255, 0.2);
+            color: #0066FF;
+            border: 2px solid #0066FF;
+        }
+        .officer-uid:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px #0066FF;
+        }
+
+        .member-uid {
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
+        }
+        .member-uid:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px #FFFFFF;
         }
     </style>
 </head>
 <body>
 
-    <!-- JUDUL GUILD DI ATAS -->
+    <!-- JUDUL GUILD: SAESTU UID -->
     <h1 class="guild-title">SAESTU UID</h1>
 
-    <!-- LOGO DALAM KOTAK DI TENGAH -->
-    <div class="logo-box">
-        <img src="https://i.imgur.com/7Z7s9QH.png" alt="Logo SAESTU UID" class="logo-img">
+    <!-- KOTAK UTAMA -->
+    <div class="main-box">
+
+        <!-- BAGIAN KAPTEN -->
+        <h2 class="section-title kapten-title">
+            <i class="fa fa-crown mr-2"></i>KAPTEN
+        </h2>
+        <div class="uid-item kapten-uid">UID: 15555555554</div>
+
+        <!-- BAGIAN OFFICER -->
+        <h2 class="section-title officer-title">
+            <i class="fa fa-shield mr-2"></i>OFFICER
+        </h2>
+        <div class="uid-item officer-uid">UID: 16000000001</div>
+
+        <!-- BAGIAN MEMBER -->
+        <h2 class="section-title member-title">
+            <i class="fa fa-users mr-2"></i>MEMBER
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="uid-item member-uid">UID: 14400000003</div>
+            <div class="uid-item member-uid">UID: 15555555561</div>
+            <div class="uid-item member-uid">UID: 15999999909</div>
+            <div class="uid-item member-uid">UID: 11999997</div>
+            <div class="uid-item member-uid">UID: 15500000002</div>
+            <div class="uid-item member-uid">UID: 15555500900</div>
+            <div class="uid-item member-uid">UID: 16000002099</div>
+            <div class="uid-item member-uid">UID: 15200000052</div>
+            <div class="uid-item member-uid">UID: 15555555557</div>
+            <div class="uid-item member-uid">UID: 15555555553</div>
+            <div class="uid-item member-uid">UID: 16124444444</div>
+            <div class="uid-item member-uid">UID: 14444444427</div>
+            <div class="uid-item member-uid">UID: 14888888555</div>
+            <div class="uid-item member-uid">UID: 15000000123</div>
+            <div class="uid-item member-uid">UID: 15000001313</div>
+            <div class="uid-item member-uid">UID: 15310000070</div>
+            <div class="uid-item member-uid">UID: 15333333033</div>
+            <div class="uid-item member-uid">UID: 15333333317</div>
+            <div class="uid-item member-uid">UID: 15333333488</div>
+            <div class="uid-item member-uid">UID: 15380000043</div>
+            <div class="uid-item member-uid">UID: 15400150000</div>
+            <div class="uid-item member-uid">UID: 15455555510</div>
+            <div class="uid-item member-uid">UID: 15500000003</div>
+            <div class="uid-item member-uid">UID: 15535555535</div>
+            <div class="uid-item member-uid">UID: 15555555552</div>
+            <div class="uid-item member-uid">UID: 15555555574</div>
+            <div class="uid-item member-uid">UID: 15555555758</div>
+            <div class="uid-item member-uid">UID: 15623333373</div>
+            <div class="uid-item member-uid">UID: 15666666614</div>
+            <div class="uid-item member-uid">UID: 15677777778</div>
+            <div class="uid-item member-uid">UID: 15699996969</div>
+            <div class="uid-item member-uid">UID: 15700000555</div>
+            <div class="uid-item member-uid">UID: 15777777783</div>
+            <div class="uid-item member-uid">UID: 16000000000</div>
+            <div class="uid-item member-uid">UID: 16200000000</div>
+            <div class="uid-item member-uid">UID: 15800031000</div>
+        </div>
     </div>
 
 </body>
-</html>
+    </html>
