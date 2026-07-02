@@ -3,240 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KENJO GENERATOR v19 - Web Edition</title>
+    <title>ASTER JKT48 • Galeri & Lagu Lengkap</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- GUNAKAN CDN PYODIDE YANG LEBIH STABIL -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pyodide/0.26.1/pyodide.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    hijau: '#00FF41',
-                    gelap: '#0A0A0A',
-                    abu: '#1A1A1A',
-                    merah: '#FF2E2E'
+                    colors: {
+                        jkt48: {
+                            red: '#E60012',
+                            pink: '#FF4D6D',
+                            gold: '#FFD700',
+                            white: '#FFFFFF',
+                            dark: '#1A0002'
+                        }
+                    },
+                    fontFamily: {
+                        jkt: ['Segoe UI', 'Roboto', 'sans-serif'],
+                        aster: ['Brush Script MT', 'cursive', 'sans-serif']
+                    },
                 }
             }
         }
     </script>
     <style type="text/tailwindcss">
-        body { background: #0A0A0A; color: #00FF41; font-family: 'Courier New', monospace; }
-        .terminal { background: #0F0F0F; border: 2px solid #00FF41; box-shadow: 0 0 20px rgba(0,255,65,0.2); }
-        .kursor { animation: kedip 1s infinite; }
-        @keyframes kedip { 50% { opacity: 0; } }
-        .scroll-hijau::-webkit-scrollbar { width: 6px; }
-        .scroll-hijau::-webkit-scrollbar-thumb { background: #00FF41; border-radius: 3px; }
+        body {
+            background: linear-gradient(135deg, #E60012 0%, #FF4D6D 50%, #FFFFFF 100%);
+            background-attachment: fixed;
+        }
+        .bg-glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .text-aster {
+            font-family: 'aster', sans-serif;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 2px 5px rgba(0,0,0,0.4);
+        }
+        .card-hover { 
+            transition: all 0.4s ease; 
+        }
+        .card-hover:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 12px 30px rgba(230, 0, 18, 0.35); 
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { 
+            background: linear-gradient(135deg, #E60012, #FF4D6D); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(230, 0, 18, 0.3);
+        }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-6">
-    <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-6">
-            <h1 class="text-[clamp(24px,6vw,48px)] font-bold text-hijau mb-2">
-                <i class="fa fa-terminal mr-3"></i>KENJO GENERATOR v19
+<body class="min-h-screen font-jkt">
+    <div class="container mx-auto px-4 py-10 max-w-7xl">
+
+        <!-- HEADER UTAMA DENGAN NAMA ASTER JKT48 -->
+        <div class="text-center mb-12 bg-glass rounded-3xl p-8">
+            <h1 class="text-[clamp(2.5rem,6vw,5rem)] font-extrabold text-jkt48-gold mb-4 text-aster">
+                ✨ ASTER JKT48 ✨
             </h1>
-            <p class="text-green-400 text-lg">TROYTALE EDITION • SPEED STABILIZER • WEB BROWSER</p>
+            <p class="text-white text-[clamp(1.2rem,3vw,1.8rem)] font-medium drop-shadow-md">
+                Galeri Foto Member • Daftar Lagu Lengkap
+            </p>
+            <div class="w-40 h-1.5 bg-jkt48-gold mx-auto mt-6 rounded-full shadow-lg"></div>
         </div>
 
-        <div class="terminal rounded-2xl p-4 md:p-6 mb-6">
-            <div id="output" class="h-[60vh] overflow-y-auto scroll-hijau p-4 text-lg leading-relaxed"></div>
-            <div class="flex items-center mt-4 border-t border-hijau/30 pt-4">
-                <span class="text-hijau mr-2">root@kenjo:~#</span>
-                <input type="text" id="cmd" class="flex-1 bg-transparent outline-none text-hijau text-lg" placeholder="Ketik perintah...">
-                <span class="kursor text-hijau text-2xl">▌</span>
+        <!-- MENU TAB -->
+        <div class="flex flex-wrap justify-center gap-4 mb-10">
+            <button class="tab-btn active bg-white/90 text-jkt48-red px-6 py-3 rounded-full font-bold text-lg shadow-lg" onclick="openTab('galeri')">
+                <i class="fa fa-images mr-2"></i>GALERI MEMBER
+            </button>
+            <button class="tab-btn bg-white/90 text-jkt48-red px-6 py-3 rounded-full font-bold text-lg shadow-lg" onclick="openTab('lagu')">
+                <i class="fa fa-music mr-2"></i>DAFTAR LAGU
+            </button>
+        </div>
+
+        <!-- TAB 1: GALERI MEMBER LENGKAP -->
+        <div id="galeri" class="tab-content active">
+            <!-- FILTER TIM -->
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <span class="bg-jkt48-red text-white px-5 py-2.5 rounded-full font-bold shadow-md">SEMUA</span>
+                <span class="bg-white/90 text-jkt48-pink px-5 py-2.5 rounded-full font-bold shadow-md">TEAM LOVE</span>
+                <span class="bg-white/90 text-blue-600 px-5 py-2.5 rounded-full font-bold shadow-md">TEAM DREAM</span>
+                <span class="bg-white/90 text-orange-600 px-5 py-2.5 rounded-full font-bold shadow-md">TEAM PASSION</span>
             </div>
-        </div>
 
-        <div class="grid md:grid-cols-3 gap-4 mb-6">
-            <button onclick="jalankanScript()" class="py-4 bg-hijau/20 hover:bg-hijau/40 border-2 border-hijau rounded-xl font-bold text-xl text-hijau transition-all">
-                <i class="fa fa-play mr-2"></i> JALANKAN GENERATOR
-            </button>
-            <button onclick="bersihkanLayar()" class="py-4 bg-abu/50 hover:bg-abu border-2 border-gray-500 rounded-xl font-bold text-xl text-gray-300 transition-all">
-                <i class="fa fa-trash mr-2"></i> BERSIHKAN LAYAR
-            </button>
-            <button onclick="hentikanProses()" class="py-4 bg-merah/20 hover:bg-merah/40 border-2 border-merah rounded-xl font-bold text-xl text-merah transition-all">
-                <i class="fa fa-stop mr-2"></i> HENTIKAN
-            </button>
-        </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-12">
+                
+                <!-- ===================== TEAM LOVE ===================== -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/a.jpg" alt="Alya JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Alya</h3>
+                        <p class="text-gray-700 text-sm">Alya Amanda • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/an.jpg" alt="Anin JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Anin</h3>
+                        <p class="text-gray-700 text-sm">Anindya Ramadhani • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/li.jpg" alt="Lia JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Lia</h3>
+                        <p class="text-gray-700 text-sm">Aurellia • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/la.jpg" alt="Lana JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Lana</h3>
+                        <p class="text-gray-700 text-sm">Aurhel Alana • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ca.jpg" alt="Cathy JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Cathy</h3>
+                        <p class="text-gray-700 text-sm">Cathleen Nixie • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ce.jpg" alt="Celline JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Celline</h3>
+                        <p class="text-gray-700 text-sm">Celline Thefannie • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/cy.jpg" alt="Cynthia JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Cynthia</h3>
+                        <p class="text-gray-700 text-sm">Cynthia Yaputera • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/fi.jpg" alt="Fiony JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Fiony</h3>
+                        <p class="text-gray-700 text-sm">Fiony Alveria • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/fr.jpg" alt="Fritzy JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Fritzy</h3>
+                        <p class="text-gray-700 text-sm">Fritzy Rosmerian • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/gr.jpg" alt="Gracie JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Gracie</h3>
+                        <p class="text-gray-700 text-sm">Grace Octaviani • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/li.jpg" alt="Lily JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Lily</h3>
+                        <p class="text-gray-700 text-sm">Hillary Abigail • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/in.jpg" alt="Indah JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Indah</h3>
+                        <p class="text-gray-700 text-sm">Indah Cahya • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/tr.jpg" alt="Trisha JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Trisha</h3>
+                        <p class="text-gray-700 text-sm">Jazzlyn Trisha • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/mi.jpg" alt="Michie JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Michie</h3>
+                        <p class="text-gray-700 text-sm">Michelle Alexandra • Team Love</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/na.jpg" alt="Nayla JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-jkt48-red text-xl">Nayla</h3>
+                        <p class="text-gray-700 text-sm">Nayla Suji • Team Love</p>
+                    </div>
+                </div>
 
-        <div class="bg-abu/50 border border-hijau/30 rounded-xl p-4 text-center">
-            <span class="text-gray-400">Status: </span>
-            <span id="status" class="text-yellow-400 font-bold">Memuat mesin Python...</span>
-        </div>
-    </div>
+                <!-- ===================== TEAM DREAM ===================== -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/de.jpg" alt="Delynn JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Delynn</h3>
+                        <p class="text-gray-700 text-sm">Adeline Wijaya • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/am.jpg" alt="Amanda JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Amanda</h3>
+                        <p class="text-gray-700 text-sm">Amanda Sukma • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ch.jpg" alt="Chelsea JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Chelsea</h3>
+                        <p class="text-gray-700 text-sm">Chelsea Davina • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ol.jpg" alt="Olla JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Olla</h3>
+                        <p class="text-gray-700 text-sm">Febriola Sinambela • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/fr.jpg" alt="Freya JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Freya</h3>
+                        <p class="text-gray-700 text-sm">Freya Jayawardana • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/el.jpg" alt="Ella JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Ella</h3>
+                        <p class="text-gray-700 text-sm">Gabriela Abigail • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ge.jpg" alt="Gendis JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Gendis</h3>
+                        <p class="text-gray-700 text-sm">Gendis Mayrannisa • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/gi.jpg" alt="Gita JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Gita</h3>
+                        <p class="text-gray-700 text-sm">Gita Sekar Andarini • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/gr.jpg" alt="Greesel JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Greesel</h3>
+                        <p class="text-gray-700 text-sm">Greesella Adhalia • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/he.jpg" alt="Eli JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Eli</h3>
+                        <p class="text-gray-700 text-sm">Helisma Putri • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/je.jpg" alt="Lyn JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Lyn</h3>
+                        <p class="text-gray-700 text-sm">Jesslyn Elly • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ma.jpg" alt="Marsha JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Marsha</h3>
+                        <p class="text-gray-700 text-sm">Marsha Lenathea • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/na.jpg" alt="Nachia JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Nachia</h3>
+                        <p class="text-gray-700 text-sm">Nina Tutachia • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ol.jpg" alt="Oline JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Oline</h3>
+                        <p class="text-gray-700 text-sm">Oline Manuel • Team Dream</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/sh.jpg" alt="Nala JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-blue-600 text-xl">Nala</h3>
+                        <p class="text-gray-700 text-sm">Shabilqis Naila • Team Dream</p>
+                    </div>
+                </div>
 
-    <script>
-        let pyodide = null;
-        let prosesBerjalan = false;
-
-        async function initPyodide() {
-            const status = document.getElementById('status');
-            try {
-                // GUNAKAN VERSI YANG LEBIH STABIL
-                pyodide = await loadPyodide({ indexURL: "https://cdnjs.cloudflare.com/ajax/libs/pyodide/0.26.1/" });
-                status.textContent = "✅ Siap! Klik Jalankan Generator.";
-                status.classList.remove('text-yellow-400');
-                status.classList.add('text-green-400');
-            } catch (err) {
-                status.textContent = "❌ Gagal memuat Python: Cek koneksi atau buka ulang halaman";
-                status.classList.remove('text-yellow-400');
-                status.classList.add('text-red-400');
-                console.error(err);
-            }
-        }
-
-        function cetak(teks) {
-            const out = document.getElementById('output');
-            out.innerHTML += teks.replace(/\n/g, '<br>');
-            out.scrollTop = out.scrollHeight;
-        }
-
-        function bersihkanLayar() { document.getElementById('output').innerHTML = ''; }
-        function hentikanProses() { prosesBerjalan = false; document.getElementById('status').textContent = "⏹️ Dihentikan."; }
-
-        const kodePython = `
-import random, string, time, re
-from datetime import datetime
-
-R,G,Y,B,P,C,W,RE,BLD = "\\033[91m","\\033[92m","\\033[93m","\\033[94m","\\033[95m","\\033[96m","\\033[97m","\\033[0m","\\033[1m"
-BORDER = f"{C}{BLD}"
-
-KENJO_ART = f"""
-{R}{BLD}
- ██▓ ███▄    █  ██ ▄█▀  ██████ ▒█████  ▒█████   ██▓
-▓██▒ ██ ▀█   █  ██▄█▒ ▒██    ▒ ▒██▒  ██▒▒██▒  ██▒▓██▒
-▒██▒▓██  ▀█ ██▒▓███▄░ ░ ▓██▄   ▒██░  ██▒▒██░  ██▒▒██▒
-░██░▓██▒  ▐▌██▒▓██ █▄   ▒   ██▒▒██   ██░▒██   ██░░██░
-░██░▒██░   ▓██░▒██▒ █▄▒██████▒▒░ ████▓▒░░ ████▓▒░░██░
-░▓  ░ ▒░   ▒ ▒ ▒ ▒▒ ▓▒▒ ▒▓▒ ▒ ░░ ▒░▒░▒░ ░ ▒░▒░▒░ ░▓ 
- ▒ ░░ ░░   ░ ▒░░ ░▒ ▒░░ ░▒  ░ ░  ░ ▒ ▒░   ░ ▒ ▒░  ▒ ░
- ▒ ░   ░   ░ ░ ░ ░░ ░ ░  ░  ░  ░ ░ ░ ▒  ░ ░ ░ ▒   ▒ ░
- ░         ░   ░  ░░ ░       ░      ░ ░      ░ ░   ░ 
-{RE}
-"""
-
-def print_banner():
-    print(KENJO_ART)
-    print(f"{BORDER}{'='*78}{RE}")
-    print(f"{BORDER}{G}KENJO GENERATOR - TROYTALE EDITION{RE}")
-    print(f"{BORDER}{Y}Versi: 4.2 | Mode: Web Browser{RE}")
-    print(f"{BORDER}{P}Dibuat oleh: KENJO TEAM{RE}")
-    print(f"{BORDER}{'='*78}{RE}\\n")
-
-class Config:
-    RARITY_THRESHOLD = 3
-    MAX_GENERATE = 50000
-
-def gen_name(): return "KENJO"+''.join(random.choices(string.ascii_uppercase+string.digits,k=6))
-def gen_pwd(): return "KENJO@"+str(random.randint(100000,999999))
-
-PATTERNS = [
-    (re.compile(r"(111|222|333|444|555|666|777|888|999|000)"), 3),
-    (re.compile(r"(1111|2222|3333|4444|5555|6666|7777|8888|9999|0000)"), 5),
-    (re.compile(r"(11111|22222|33333|44444|55555|66666|77777|88888|99999|00000)"), 7),
-    (re.compile(r"(1111111|2222222|3333333|4444444|5555555|6666666|7777777|8888888|9999999|0000000)"), 10),
-]
-
-def detect_score(aid):
-    s = str(aid)
-    best=0
-    for p,sc in PATTERNS:
-        if p.search(s): best=max(best,sc)
-    l=len(s)
-    if l<=5: best=max(best,8)
-    elif l<=6: best=max(best,6)
-    elif l<=7: best=max(best,4)
-    return best
-
-def get_tier(sc):
-    if sc>=9: return "LEGEND"
-    elif sc>=7: return "HIGH"
-    elif sc>=5: return "MEDIUM"
-    elif sc>=Config.RARITY_THRESHOLD: return "LOW"
-    return "NORMAL"
-
-def main():
-    print_banner()
-    print(f"{Y}[⌛] Memulai Generator ID...{RE}\\n")
-    total=normal=low=med=high=legend=0
-    mulai=time.time()
-    try:
-        for _ in range(Config.MAX_GENERATE):
-            if not proses_berjalan:
-                print(f"\\n{R}[⏹️] Dihentikan.{RE}")
-                break
-            aid=random.randint(10000000,999999999)
-            nm=gen_name()
-            pw=gen_pwd()
-            sk=detect_score(aid)
-            tier=get_tier(sk)
-            total+=1
-            if tier=="NORMAL":
-                normal+=1
-                print(f"{W}[ℹ️] ID:{aid:10d} | Nama:{nm:12s} | Tier:{tier:6s}{RE}")
-            elif tier=="LOW":
-                low+=1
-                print(f"{G}[💎] ID:{aid:10d} | Nama:{nm:12s} | Tier:{tier:6s} | Skor:{sk}{RE}")
-            elif tier=="MEDIUM":
-                med+=1
-                print(f"{B}[💎💎] ID:{aid:10d} | Nama:{nm:12s} | Tier:{tier:6s} | Skor:{sk}{RE}")
-            elif tier=="HIGH":
-                high+=1
-                print(f"{Y}[💎💎💎] ID:{aid:10d} | Nama:{nm:12s} | Tier:{tier:6s} | Skor:{sk}{RE}")
-            elif tier=="LEGEND":
-                legend+=1
-                print(f"{R}{BLD}[👑 LEGEND] ID:{aid:10d} | Nama:{nm:12s} | Pass:{pw:15s} | Skor:{sk}{RE}")
-            if total%50==0:
-                kec=round(total/(time.time()-mulai),2)
-                print(f"\\n{C}[📊] Total:{total} | Normal:{normal} | Rare:{low+med+high+legend} | Kecepatan:{kec} ID/detik{RE}\\n")
-    except Exception as e:
-        print(f"\\n{R}[❌] Error:{e}{RE}")
-    finally:
-        dur=round(time.time()-mulai,2)
-        print(f"\\n{'='*78}\\n{G}[✅] SELESAI!{RE}\\n• Total:{total:,}\\n• Normal:{normal:,}\\n• Low:{low:,}\\n• Medium:{med:,}\\n• High:{high:,}\\n• Legend:{legend:,}\\n• Durasi:{dur} detik\\n• Rata-rata:{round(total/dur,2)} ID/detik\\n{'='*78}")
-
-proses_berjalan = True
-main()
-`;
-
-        async function jalankanScript() {
-            if (!pyodide) { alert("Tunggu sampai status hijau 'Siap'"); return; }
-            if (prosesBerjalan) return;
-            bersihkanLayar();
-            prosesBerjalan = true;
-            document.getElementById('status').textContent = "🔄 Sedang berjalan...";
-            document.getElementById('status').className = "text-yellow-400 font-bold";
-            try {
-                pyodide.globals.set('proses_berjalan', true);
-                pyodide.runPython(`
-import sys
-from io import StringIO
-sys.stdout = buf = StringIO()
-`);
-                await pyodide.runPythonAsync(kodePython);
-                const hasil = pyodide.runPython('buf.getvalue()').replace(/\033\[[0-9;]*m/g, '');
-                cetak(hasil);
-            } catch (err) {
-                cetak(`\\n❌ Kesalahan: ${err}\\n`);
-            } finally {
-                prosesBerjalan = false;
-                document.getElementById('status').textContent = "✅ Selesai / Siap lagi";
-                document.getElementById('status').className = "text-green-400 font-bold";
-            }
-        }
-
-        initPyodide();
-        document.getElementById('cmd').addEventListener('keydown', e => {
-            if (e.key === 'Enter') {
-                const perintah = e.target.value.trim().toLowerCase();
-                cetak(`<br>root@kenjo:~# ${perintah}<br>`);
-                e.target.value = '';
-                if (perintah === 'start' || perintah === 'run') jalankanScript();
-                else if (perintah === 'clear') bersihkanLayar();
-                else if (perintah === 'stop') hentikanProses();
-                else cetak(`Gunakan: start | clear | stop<br>`);
-            }
-        });
-    </script>
-</body>
-    </html>
+                <!-- ===================== TEAM PASSION ===================== -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ar.jpg" alt="Aralle JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-orange-600 text-xl">Aralle</h3>
+                        <p class="text-gray-700 text-sm">Aralie Putri • Team Passion</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/ch.jpg" alt="Christy JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-orange-600 text-xl">Christy</h3>
+                        <p class="text-gray-700 text-sm">Christy Marsha • Team Passion</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover">
+                    <img src="https://jkt48.com/profile/er.jpg" alt="Erine JKT48" class="w-full h-64 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-bold text-orange-600 text-xl">Erine</h3>
+                        <p class="text-gray-700 text-sm">Erine Vallencia • Team Passion</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-
