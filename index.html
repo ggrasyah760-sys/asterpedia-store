@@ -3,311 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASTER JKT48 • Profil Lengkap</title>
+    <title>JKT48 • Foto Tanpa Error</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        jkt48: { red: '#E60012', pink: '#FF4D6D', gold: '#FFD700', dark: '#1A0002' }
-                    },
-                    fontFamily: {
-                        jkt: ['Segoe UI', 'Roboto', 'sans-serif'],
-                        aster: ['Brush Script MT', 'cursive', 'sans-serif']
-                    }
+                    colors: { jkt48: { red: '#E60012', pink: '#FF4D6D' } },
+                    fontFamily: { jkt: ['Segoe UI', 'sans-serif'] }
                 }
             }
         }
     </script>
-    <style type="text/tailwindcss">
-        body {
-            background: linear-gradient(135deg, #E60012 0%, #FF4D6D 50%, #FFFFFF 100%);
-            background-attachment: fixed;
-        }
-        .bg-glass {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .text-aster {
-            font-family: 'aster', sans-serif;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 2px 5px rgba(0,0,0,0.4);
-        }
-        .card-hover { 
-            transition: all 0.4s ease; 
-            cursor: pointer;
-        }
-        .card-hover:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 12px 30px rgba(230, 0, 18, 0.35); 
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .tab-btn.active { 
-            background: linear-gradient(135deg, #E60012, #FF4D6D); 
-            color: white; 
-            box-shadow: 0 4px 12px rgba(230, 0, 18, 0.3);
-        }
-        /* Modal Profil */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background: white;
-            margin: 5% auto;
-            padding: 2rem;
-            width: 90%;
-            max-width: 450px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.3);
-            animation: modalFade 0.4s ease;
-        }
-        @keyframes modalFade {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .close {
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            color: #E60012;
-            cursor: pointer;
-        }
+    <style>
+        body { background: linear-gradient(135deg, #E60012, #FF4D6D, #fff); min-height: 100vh; }
+        .card { transition: 0.3s; }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 10px 25px rgba(230,0,18,0.3); }
+        .img-jkt { object-fit: cover; border: 4px solid white; }
+        .img-error { background: #f1f1f1; display: flex; align-items: center; justify-content: center; color: #888; }
     </style>
 </head>
-<body class="min-h-screen font-jkt">
-    <!-- Modal Profil -->
-    <div id="profilModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="tutupModal()">&times;</span>
-            <div class="text-center">
-                <img id="modalFoto" src="" alt="Foto Member" class="w-48 h-48 object-cover rounded-full mx-auto mb-4 border-4 border-jkt48-red">
-                <h2 id="modalNama" class="text-3xl font-bold text-jkt48-red mb-2"></h2>
-                <p id="modalNamaAsli" class="text-lg text-gray-700 mb-1"></p>
-                <p id="modalTim" class="font-semibold text-blue-600 mb-2"></p>
-                <p id="modalTglLahir" class="text-gray-800 font-medium text-lg mb-4"></p>
-                <a id="modalLink" href="" target="_blank" class="inline-block bg-jkt48-red text-white px-6 py-3 rounded-xl font-bold hover:bg-jkt48-pink transition">
-                    <i class="fa fa-external-link mr-2"></i>Lihat di Situs Resmi
-                </a>
+<body class="font-jkt py-8 px-4">
+    <div class="container mx-auto max-w-6xl">
+        <h1 class="text-center text-white text-[clamp(2rem,5vw,3.5rem)] font-bold mb-10 drop-shadow-lg">
+            <i class="fa fa-heart mr-2"></i>Member JKT48
+        </h1>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- FREYA -->
+            <div class="card bg-white rounded-2xl overflow-hidden text-center p-4">
+                <img src="https://akb48.fandom.com/wiki/Freya_Jayawardana?file=Freya_Jayawardana_2024.jpg"
+                     alt="Freya Jayawardana" class="w-full h-64 img-jkt rounded-xl mb-3"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Freya+JKT48';this.classList.add('img-error');">
+                <h3 class="font-bold text-xl text-jkt48-red">Freya Jayawardana</h3>
+                <p class="text-gray-600">Kapten JKT48</p>
+            </div>
+
+            <!-- CHRISTY -->
+            <div class="card bg-white rounded-2xl overflow-hidden text-center p-4">
+                <img src="https://akb48.fandom.com/wiki/Angelina_Christy?file=Angelina_Christy_2024.jpg"
+                     alt="Angelina Christy" class="w-full h-64 img-jkt rounded-xl mb-3"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Christy+JKT48';this.classList.add('img-error');">
+                <h3 class="font-bold text-xl text-jkt48-red">Angelina Christy</h3>
+                <p class="text-gray-600">Member Aktif</p>
+            </div>
+
+            <!-- MARSHA -->
+            <div class="card bg-white rounded-2xl overflow-hidden text-center p-4">
+                <img src="https://akb48.fandom.com/wiki/Marsha_Lenathea?file=Marsha_Lenathea_2024.jpg"
+                     alt="Marsha Lenathea" class="w-full h-64 img-jkt rounded-xl mb-3"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Marsha+JKT48';this.classList.add('img-error');">
+                <h3 class="font-bold text-xl text-jkt48-red">Marsha Lenathea</h3>
+                <p class="text-gray-600">Member Aktif</p>
+            </div>
+
+            <!-- MUTHE -->
+            <div class="card bg-white rounded-2xl overflow-hidden text-center p-4">
+                <img src="https://akb48.fandom.com/wiki/Mutiara_Azzahra?file=Mutiara_Azzahra_2024.jpg"
+                     alt="Mutiara Azzahra" class="w-full h-64 img-jkt rounded-xl mb-3"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Muthe+JKT48';this.classList.add('img-error');">
+                <h3 class="font-bold text-xl text-jkt48-red">Mutiara Azzahra</h3>
+                <p class="text-gray-600">Member Aktif</p>
+            </div>
+
+            <!-- ONIEL -->
+            <div class="card bg-white rounded-2xl overflow-hidden text-center p-4">
+                <img src="https://akb48.fandom.com/wiki/Cornelia_Vanisa?file=Cornelia_Vanisa_2024.jpg"
+                     alt="Cornelia Vanisa" class="w-full h-64 img-jkt rounded-xl mb-3"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Oniel+JKT48';this.classList.add('img-error');">
+                <h3 class="font-bold text-xl text-jkt48-red">Cornelia Vanisa</h3>
+                <p class="text-gray-600">Member Aktif</p>
+            </div>
+
+            <!-- ZEE -->
+            <div class="card bg-white rounded-2xl overflow-hidden text-center p-4">
+                <img src="https://akb48.fandom.com/wiki/Azizi_Shafaa_Asadel?file=Azizi_Shafaa_Asadel_2023.jpg"
+                     alt="Azizi Shafaa Asadel" class="w-full h-64 img-jkt rounded-xl mb-3"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/300x400?text=Zee+JKT48';this.classList.add('img-error');">
+                <h3 class="font-bold text-xl text-jkt48-red">Azizi S. Asadel</h3>
+                <p class="text-gray-600">Sudah Lulus</p>
             </div>
         </div>
     </div>
-
-    <div class="container mx-auto px-4 py-10 max-w-7xl">
-        <!-- HEADER UTAMA -->
-        <div class="text-center mb-12 bg-glass rounded-3xl p-8">
-            <h1 class="text-[clamp(2.5rem,6vw,5rem)] font-extrabold text-jkt48-gold mb-4 text-aster">
-                ✨ ASTER JKT48 ✨
-            </h1>
-            <p class="text-white text-[clamp(1.2rem,3vw,1.8rem)] font-medium drop-shadow-md">
-                Profil Lengkap Member • Tanggal Lahir & Lagu
-            </p>
-            <div class="w-40 h-1.5 bg-jkt48-gold mx-auto mt-6 rounded-full shadow-lg"></div>
-        </div>
-
-        <!-- MENU TAB -->
-        <div class="flex flex-wrap justify-center gap-4 mb-10">
-            <button class="tab-btn active bg-white/90 text-jkt48-red px-6 py-3 rounded-full font-bold text-lg shadow-lg" onclick="openTab('galeri')">
-                <i class="fa fa-images mr-2"></i>PROFIL MEMBER
-            </button>
-            <button class="tab-btn bg-white/90 text-jkt48-red px-6 py-3 rounded-full font-bold text-lg shadow-lg" onclick="openTab('lagu')">
-                <i class="fa fa-music mr-2"></i>DAFTAR LAGU
-            </button>
-        </div>
-
-        <!-- TAB 1: PROFIL MEMBER LENGKAP -->
-        <div id="galeri" class="tab-content active">
-            <div class="flex flex-wrap justify-center gap-3 mb-8">
-                <span class="bg-jkt48-red text-white px-5 py-2.5 rounded-full font-bold shadow-md">SEMUA</span>
-                <span class="bg-white/90 text-jkt48-pink px-5 py-2.5 rounded-full font-bold shadow-md">TEAM LOVE</span>
-                <span class="bg-white/90 text-blue-600 px-5 py-2.5 rounded-full font-bold shadow-md">TEAM DREAM</span>
-                <span class="bg-white/90 text-orange-600 px-5 py-2.5 rounded-full font-bold shadow-md">TEAM PASSION</span>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-12">
-                
-                <!-- ===================== TEAM LOVE ===================== -->
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Alya', 'Alya Amanda', 'Team Love', '23 Maret 2006', 'https://jkt48.com/profile/aly.jpg', 'https://jkt48.com/member/detail/aly')">
-                    <img src="https://jkt48.com/profile/aly.jpg" alt="Alya JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Alya</h3>
-                        <p class="text-gray-700 text-sm">Alya Amanda</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">23 Maret 2006</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Anin', 'Anindya Ramadhani', 'Team Love', '18 Oktober 2005', 'https://jkt48.com/profile/ani.jpg', 'https://jkt48.com/member/detail/ani')">
-                    <img src="https://jkt48.com/profile/ani.jpg" alt="Anin JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Anin</h3>
-                        <p class="text-gray-700 text-sm">Anindya Ramadhani</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">18 Oktober 2005</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Lia', 'Aurellia', 'Team Love', '20 September 2004', 'https://jkt48.com/profile/aur.jpg', 'https://jkt48.com/member/detail/aur')">
-                    <img src="https://jkt48.com/profile/aur.jpg" alt="Lia JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Lia</h3>
-                        <p class="text-gray-700 text-sm">Aurellia</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">20 September 2004</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Lana', 'Aurhel Alana', 'Team Love', '16 Oktober 2006', 'https://jkt48.com/profile/aurh.jpg', 'https://jkt48.com/member/detail/aurh')">
-                    <img src="https://jkt48.com/profile/aurh.jpg" alt="Lana JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Lana</h3>
-                        <p class="text-gray-700 text-sm">Aurhel Alana</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">16 Oktober 2006</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Cathy', 'Cathleen Nixie', 'Team Love', '24 Mei 2006', 'https://jkt48.com/profile/cat.jpg', 'https://jkt48.com/member/detail/cat')">
-                    <img src="https://jkt48.com/profile/cat.jpg" alt="Cathy JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Cathy</h3>
-                        <p class="text-gray-700 text-sm">Cathleen Nixie</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">24 Mei 2006</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Celline', 'Celline Thefannie', 'Team Love', '14 September 2007', 'https://jkt48.com/profile/cel.jpg', 'https://jkt48.com/member/detail/cel')">
-                    <img src="https://jkt48.com/profile/cel.jpg" alt="Celline JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Celline</h3>
-                        <p class="text-gray-700 text-sm">Celline Thefannie</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">14 September 2007</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Cynthia', 'Cynthia Yaputera', 'Team Love', '22 November 2003', 'https://jkt48.com/profile/cyn.jpg', 'https://jkt48.com/member/detail/cyn')">
-                    <img src="https://jkt48.com/profile/cyn.jpg" alt="Cynthia JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Cynthia</h3>
-                        <p class="text-gray-700 text-sm">Cynthia Yaputera</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">22 November 2003</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Fiony', 'Fiony Alveria', 'Team Love', '4 Februari 2002', 'https://jkt48.com/profile/fio.jpg', 'https://jkt48.com/member/detail/fio')">
-                    <img src="https://jkt48.com/profile/fio.jpg" alt="Fiony JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Fiony</h3>
-                        <p class="text-gray-700 text-sm">Fiony Alveria</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">4 Februari 2002</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Fritzy', 'Fritzy Rosmerian', 'Team Love', '28 Juli 2008', 'https://jkt48.com/profile/fri.jpg', 'https://jkt48.com/member/detail/fri')">
-                    <img src="https://jkt48.com/profile/fri.jpg" alt="Fritzy JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Fritzy</h3>
-                        <p class="text-gray-700 text-sm">Fritzy Rosmerian</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">28 Juli 2008</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Gracie', 'Grace Octaviani', 'Team Love', '18 Oktober 2007', 'https://jkt48.com/profile/gra.jpg', 'https://jkt48.com/member/detail/gra')">
-                    <img src="https://jkt48.com/profile/gra.jpg" alt="Gracie JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Gracie</h3>
-                        <p class="text-gray-700 text-sm">Grace Octaviani</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">18 Oktober 2007</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Lily', 'Hillary Abigail', 'Team Love', '19 Oktober 2006', 'https://jkt48.com/profile/hil.jpg', 'https://jkt48.com/member/detail/hil')">
-                    <img src="https://jkt48.com/profile/hil.jpg" alt="Lily JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Lily</h3>
-                        <p class="text-gray-700 text-sm">Hillary Abigail</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">19 Oktober 2006</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Indah', 'Indah Cahya', 'Team Love', '20 Maret 2001', 'https://jkt48.com/profile/ind.jpg', 'https://jkt48.com/member/detail/ind')">
-                    <img src="https://jkt48.com/profile/ind.jpg" alt="Indah JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Indah</h3>
-                        <p class="text-gray-700 text-sm">Indah Cahya</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">20 Maret 2001</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Trisha', 'Jazzlyn Trisha', 'Team Love', '16 Oktober 2008', 'https://jkt48.com/profile/jaz.jpg', 'https://jkt48.com/member/detail/jaz')">
-                    <img src="https://jkt48.com/profile/jaz.jpg" alt="Trisha JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Trisha</h3>
-                        <p class="text-gray-700 text-sm">Jazzlyn Trisha</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">16 Oktober 2008</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Michie', 'Michelle Alexandra', 'Team Love', '12 September 2004', 'https://jkt48.com/profile/mic.jpg', 'https://jkt48.com/member/detail/mic')">
-                    <img src="https://jkt48.com/profile/mic.jpg" alt="Michie JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Michie</h3>
-                        <p class="text-gray-700 text-sm">Michelle Alexandra</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">12 September 2004</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Nayla', 'Nayla Suji', 'Team Love', '18 Juni 2007', 'https://jkt48.com/profile/nay.jpg', 'https://jkt48.com/member/detail/nay')">
-                    <img src="https://jkt48.com/profile/nay.jpg" alt="Nayla JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-jkt48-red text-xl">Nayla</h3>
-                        <p class="text-gray-700 text-sm">Nayla Suji</p>
-                        <p class="text-jkt48-pink font-semibold text-sm mt-1">18 Juni 2007</p>
-                    </div>
-                </div>
-
-                <!-- ===================== TEAM DREAM ===================== -->
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Delynn', 'Adeline Wijaya', 'Team Dream', '5 September 2007', 'https://jkt48.com/profile/ade.jpg', 'https://jkt48.com/member/detail/ade')">
-                    <img src="https://jkt48.com/profile/ade.jpg" alt="Delynn JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-blue-600 text-xl">Delynn</h3>
-                        <p class="text-gray-700 text-sm">Adeline Wijaya</p>
-                        <p class="text-blue-500 font-semibold text-sm mt-1">5 September 2007</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Amanda', 'Amanda Sukma', 'Team Dream', '10 Juli 2004', 'https://jkt48.com/profile/ama.jpg', 'https://jkt48.com/member/detail/ama')">
-                    <img src="https://jkt48.com/profile/ama.jpg" alt="Amanda JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-blue-600 text-xl">Amanda</h3>
-                        <p class="text-gray-700 text-sm">Amanda Sukma</p>
-                        <p class="text-blue-500 font-semibold text-sm mt-1">10 Juli 2004</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Chelsea', 'Chelsea Davina', 'Team Dream', '23 Desember 2007', 'https://jkt48.com/profile/che.jpg', 'https://jkt48.com/member/detail/che')">
-                    <img src="https://jkt48.com/profile/che.jpg" alt="Chelsea JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-blue-600 text-xl">Chelsea</h3>
-                        <p class="text-gray-700 text-sm">Chelsea Davina</p>
-                        <p class="text-blue-500 font-semibold text-sm mt-1">23 Desember 2007</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Olla', 'Febriola Sinambela', 'Team Dream', '18 Februari 2005', 'https://jkt48.com/profile/feb.jpg', 'https://jkt48.com/member/detail/feb')">
-                    <img src="https://jkt48.com/profile/feb.jpg" alt="Olla JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold text-blue-600 text-xl">Olla</h3>
-                        <p class="text-gray-700 text-sm">Febriola Sinambela</p>
-                        <p class="text-blue-500 font-semibold text-sm mt-1">18 Februari 2005</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl card-hover" onclick="bukaModal('Freya', 'Freya Jayawardana', 'Team Dream', '13 Februari 2006', 'https://jkt48.com/profile/fre.jpg', 'https://jkt48.com/member/detail/fre')">
-                    <img src="https://jkt48.com/profile/fre.jpg" alt="Freya JKT48" class="w-full h-48 object-cover">
-                    <div class="p-3 text-center">
-                        <h3 class="font-bold t
+</body>
+                    </html>
